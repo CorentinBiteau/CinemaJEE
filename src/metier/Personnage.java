@@ -3,6 +3,8 @@ package metier;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.google.gson.annotations.Expose;
+
 
 /**
  * The persistent class for the personnage database table.
@@ -24,6 +26,7 @@ public class Personnage implements Serializable {
 	private Film film;
 
 	//bi-directional many-to-one association to Acteur
+	@Expose(serialize = false, deserialize = false) 
 	@ManyToOne
 	@JoinColumn(name="NoAct")
 	private Acteur acteur;

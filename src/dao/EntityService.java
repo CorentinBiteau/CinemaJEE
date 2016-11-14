@@ -10,7 +10,7 @@ public abstract class EntityService {
 	protected EntityManagerFactory emf;
 
 	public EntityTransaction startTransaction() {
-		emf = Persistence.createEntityManagerFactory("CinemaJEE");
+		emf = Persistence.createEntityManagerFactory("cinema");
 		entitymanager = emf.createEntityManager();
 		return entitymanager.getTransaction();
 	}

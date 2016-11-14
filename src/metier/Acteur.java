@@ -2,6 +2,9 @@ package metier;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 import java.util.List;
 

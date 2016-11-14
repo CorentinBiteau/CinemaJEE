@@ -16,7 +16,7 @@ public class ActeurService extends EntityService {
         List<Acteur> acteurs = null;
         EntityTransaction transac = this.startTransaction();
         transac.begin();
-        acteurs = (List<Acteur>) entitymanager.createQuery("SELECT a FROM Acteur a ORDER BY a.nomAct, a.prenAct");
+        acteurs = (List<Acteur>) entitymanager.createQuery("SELECT a FROM Acteur a ORDER BY a.nomAct, a.prenAct").getResultList();
         entitymanager.close();
         emf.close();
         return acteurs;
