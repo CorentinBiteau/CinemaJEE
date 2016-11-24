@@ -14,6 +14,8 @@ public class WSApplication extends Application {
 	
 	public WSApplication() {
 		singletons.add(new ActeursWService());
+		singletons.add(new FilmsWService());
+		singletons.add(new CategorieWService());
 	}
 	
 	@Override
