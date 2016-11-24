@@ -2,8 +2,6 @@ package dao;
 
 import metier.Personnage;
 
-import javax.persistence.EntityTransaction;
-
 import java.util.List;
 
 /**
@@ -14,12 +12,6 @@ public class PersonnageService extends EntityService {
     }
 
     public List<Personnage> getPersonnages(){
-        List<Personnage> Personnages = null;
-        EntityTransaction transac = this.startTransaction();
-        transac.begin();
-        Personnages = (List<Personnage>) entitymanager.createQuery("SELECT a FROM Personnage a ORDER BY a.nomPers");
-        entitymanager.close();
-        emf.close();
-        return Personnages;
+        return (List<Personnage>) super.PerformQueryList("SELECT a FROM Personnage a ORDER BY a.nomPers", null);
     }
 }

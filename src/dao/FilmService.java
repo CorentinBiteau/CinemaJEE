@@ -2,8 +2,7 @@ package dao;
 
 import metier.Film;
 
-import javax.persistence.EntityTransaction;
-
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,12 +13,13 @@ public class FilmService extends EntityService{
     }
 
     public List<Film> getFilms(){
-        List<Film> Films = null;
-        EntityTransaction transac = this.startTransaction();
-        transac.begin();
-        Films = (List<Film>) entitymanager.createQuery("SELECT a FROM Film a ORDER BY a.id");
-        entitymanager.close();
-        emf.close();
-        return Films;
+        String statement = "SELECT a FROM Film a ORDER BY a.id";
+        return (List<Film>) super.PerformQueryList(statement, null);
+    }
+
+    public List<Film> getFilm(int FilmId){
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("id", FilmId);
+        return (List<Film>) super.PerformQueryList("SELECT a FROM Film a  WHERE a.id=:id ORDER BY a.id", params);
     }
 }

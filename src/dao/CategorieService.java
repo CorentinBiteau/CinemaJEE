@@ -2,8 +2,6 @@ package dao;
 
 import metier.Categorie;
 
-import javax.persistence.EntityTransaction;
-
 import java.util.List;
 
 /**
@@ -11,12 +9,6 @@ import java.util.List;
  */
 public class CategorieService extends EntityService {
     public List<Categorie> getCategories(){
-        List<Categorie> Categories = null;
-        EntityTransaction transac = this.startTransaction();
-        transac.begin();
-        Categories = (List<Categorie>) entitymanager.createQuery("SELECT a FROM Categorie a ORDER BY a.libelleCat");
-        entitymanager.close();
-        emf.close();
-        return Categories;
+        return (List<Categorie>) super.PerformQueryList("SELECT a FROM Categorie a ORDER BY a.libelleCat", null);
     }
 }

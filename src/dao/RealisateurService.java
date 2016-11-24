@@ -2,7 +2,6 @@ package dao;
 
 import metier.Realisateur;
 
-import javax.persistence.EntityTransaction;
 import java.util.List;
 
 /**
@@ -13,12 +12,6 @@ public class RealisateurService extends EntityService{
     }
 
     public List<Realisateur> getRealisateurs(){
-        List<Realisateur> Realisateurs = null;
-        EntityTransaction transac = this.startTransaction();
-        transac.begin();
-        Realisateurs = (List<Realisateur>) entitymanager.createQuery("SELECT a FROM Realisateur a ORDER BY a.nomRea, a.prenRea");
-        entitymanager.close();
-        emf.close();
-        return Realisateurs;
+        return  (List<Realisateur>) super.PerformQueryList("SELECT a FROM Realisateur a ORDER BY a.nomRea, a.prenRea", null);
     }
 }

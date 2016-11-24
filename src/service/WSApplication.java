@@ -13,7 +13,7 @@ public class WSApplication extends Application {
 	private Set<Class<?>> empty = new HashSet<Class<?>>();
 	
 	public WSApplication() {
-		singletons.add(new WService());
+		singletons.add(new ActeursWService());
 	}
 	
 	@Override
