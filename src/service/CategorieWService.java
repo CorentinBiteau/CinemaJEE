@@ -57,10 +57,10 @@ public class CategorieWService {
     @POST
     @Path("/add")
     @Produces("application/json")
-    public String addCategorie(@FormParam("codeCat") String codeCat, @FormParam("libelleCat") String libelleCat){
+    public String addCategorie(@FormParam("codeCat") String codeCat, @FormParam("libelleCat") String libelleCat) {
         Categorie categorie = new Categorie();
-        categorie.setCodeCat(codeCat);
-        categorie.setLibelleCat(libelleCat);
+        if (codeCat != null) categorie.setCodeCat(codeCat);
+        if (libelleCat != null) categorie.setLibelleCat(libelleCat);
 
         CategorieService categorieService = new CategorieService();
         categorieService.addCategorie(categorie);
@@ -71,14 +71,14 @@ public class CategorieWService {
     @Path("/update/id/{codeCat}")
     @Produces("application/json")
     public String addCategorie(@PathParam("codeCat") String oldCodeCat,
-            @FormParam("codeCat") String NewcodeCat, @FormParam("libelleCat") String libelleCat){
+                               @FormParam("codeCat") String NewcodeCat, @FormParam("libelleCat") String libelleCat) {
         CategorieService categorieService = new CategorieService();
 
         Categorie oldCat = categorieService.getCategorieById(oldCodeCat);
 
         Categorie categorie = new Categorie();
-        categorie.setCodeCat(NewcodeCat);
-        categorie.setLibelleCat(libelleCat);
+        if (NewcodeCat != null) categorie.setCodeCat(NewcodeCat);
+        if (libelleCat != null) categorie.setLibelleCat(libelleCat);
 
         categorieService.updateCategorie(oldCat, NewcodeCat, libelleCat);
         return new Gson().toJson(categorie);

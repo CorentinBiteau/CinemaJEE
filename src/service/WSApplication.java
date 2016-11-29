@@ -7,7 +7,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 // addresse de basse pour acc�der au WS
-@ApplicationPath("/")
+@ApplicationPath("/WS")
 public class WSApplication extends Application {
 	private Set<Object> singletons = new HashSet<Object>();
 	private Set<Class<?>> empty = new HashSet<Class<?>>();
@@ -16,6 +16,8 @@ public class WSApplication extends Application {
 		singletons.add(new ActeursWService());
 		singletons.add(new FilmsWService());
 		singletons.add(new CategorieWService());
+		singletons.add(new PersonnageWService());
+		singletons.add(new RealisateurWService());
 	}
 	
 	@Override
