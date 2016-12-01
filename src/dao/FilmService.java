@@ -47,19 +47,20 @@ public class FilmService extends EntityService {
         super.PerformInsert(f);
     }
 
-    public int updateFilm(Film f){
+    public int updateFilm(Film oldFilm, Film newFilm){
         HashMap<String, Object> params = new HashMap<>();
 
-        params.put("id", f.getNoFilm());
-        params.put("name", f.getTitre());
-        params.put("duration", f.getDuree());
-        params.put("releasedate", f.getDateSortie());
-        params.put("budget", f.getBudget());
-        params.put("earnings", f.getMontantRecette());
+        params.put("old_id", oldFilm.getNoFilm());
+        params.put("id", newFilm.getNoFilm());
+        params.put("name", newFilm.getTitre());
+        params.put("duration", newFilm.getDuree());
+        params.put("releasedate", newFilm.getDateSortie());
+        params.put("budget", newFilm.getBudget());
+        params.put("earnings", newFilm.getMontantRecette());
 
         return super.PerformUpdate("UPDATE Film f SET " +
                 "f.noFilm=:id, f.titre=:name, f.duree=:duration, f.dateSortie=:releasedate, f.budget=:budget, f.montantRecette=:earnings " +
-                "WHERE f.noFilm=:id", params);
+                "WHERE f.noFilm=:old_id", params);
 
     }
 

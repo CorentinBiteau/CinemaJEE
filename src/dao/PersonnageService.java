@@ -52,8 +52,8 @@ public class PersonnageService extends EntityService {
 
         params.put("old_act_id", oldPers.getId().getNoAct() );
         params.put("old_film_id", oldPers.getId().getNoFilm() );
-        params.put("act_id", newPers.getId().getNoFilm());
-        params.put("film_id", newPers.getId().getNoFilm());
+        params.put("act_id", newPers.getActeur().getNoAct());
+        params.put("film_id", newPers.getFilm().getNoFilm());
         params.put("name", newPers.getNomPers());
 
         return super.PerformUpdate("UPDATE Personnage p SET p.id.noFilm=:film_id, p.id.noAct=:act_id, p.nomPers=:name " +
