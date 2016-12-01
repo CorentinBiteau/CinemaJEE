@@ -2,8 +2,9 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.ActeurService;
+import dao.CategorieService;
 import dao.FilmService;
+import dao.RealisateurService;
 import exclusions.ActeurExclusionStrategy;
 import exclusions.FilmExclusionStrategy;
 import metier.Film;
@@ -63,6 +64,7 @@ public class FilmsWService {
     @Produces("application/json")
     public String addFilm(@FormParam("titre") String MovieTitle, @FormParam("duree") String MovieDuration,
                           @FormParam("dateSortie") String MovieReleaseDate, @FormParam("budget") String MovieBudget,
+                          @FormParam("noRea") String RealisateurId, @FormParam("codeCat") String categoryId,
                           @FormParam("montantRecette") String MovieMontantRecette) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Film f = new Film();
@@ -76,41 +78,46 @@ public class FilmsWService {
         }
         if (MovieBudget != null) f.setBudget(Integer.parseInt(MovieBudget));
         if (MovieMontantRecette != null) f.setMontantRecette(Integer.parseInt(MovieMontantRecette));
+        if (categoryId != null) f.setCategorie(new CategorieService().getCategorieById(categoryId));
+        if (RealisateurId != null)
+            f.setRealisateur(new RealisateurService().getRealisateurById(Integer.parseInt(RealisateurId)));
 
         FilmService fs = new FilmService();
         f.setNoFilm(fs.getMaxId().intValue() + 1);
         fs.addFilm(f);
 
-        return new Gson().toJson(f);
+        return new GsonBuilder().addSerializationExclusionStrategy(new FilmExclusionStrategy()).create().toJson(f);
     }
 
     @PUT
-    @Path("/update/id/{id}")
+    @Path("/update/id/{old_movie_id}")
     @Produces("application/json")
     public String updateFilm(
-            @PathParam("id") String FilmId,
+            @PathParam("old_movie_id") String oldFilmId,
+            @FormParam("noFilm") String newFilmId,
             @FormParam("titre") String MovieTitle, @FormParam("duree") String MovieDuration,
             @FormParam("dateSortie") String MovieReleaseDate, @FormParam("budget") String MovieBudget,
             @FormParam("montantRecette") String MovieMontantRecette) {
 
         FilmService as = new FilmService();
 
-        Film f = as.getFilmById(Integer.parseInt(FilmId));
-
+        Film oldFilm = as.getFilmById(Integer.parseInt(oldFilmId));
+        Film newFilm = as.getFilmById(Integer.parseInt(oldFilmId));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (MovieTitle != null) f.setTitre(MovieTitle);
-        if (MovieDuration != null) f.setDuree(Integer.parseInt(MovieDuration));
+        if (newFilmId != null) newFilm.setNoFilm(Integer.parseInt(newFilmId));
+        if (MovieTitle != null) newFilm.setTitre(MovieTitle);
+        if (MovieDuration != null) newFilm.setDuree(Integer.parseInt(MovieDuration));
         if (MovieReleaseDate != null) try {
-            f.setDateSortie(formatter.parse(MovieReleaseDate));
+            newFilm.setDateSortie(formatter.parse(MovieReleaseDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (MovieBudget != null) f.setBudget(Integer.parseInt(MovieBudget));
-        if (MovieMontantRecette != null) f.setMontantRecette(Integer.parseInt(MovieMontantRecette));
+        if (MovieBudget != null) newFilm.setBudget(Integer.parseInt(MovieBudget));
+        if (MovieMontantRecette != null) newFilm.setMontantRecette(Integer.parseInt(MovieMontantRecette));
 
-        as.updateFilm(f);
+        as.updateFilm(oldFilm, newFilm);
 
-        return new Gson().toJson(f);
+        return new GsonBuilder().addSerializationExclusionStrategy(new FilmExclusionStrategy()).create().toJson(newFilm);
     }
 }

@@ -6,6 +6,8 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.ActeurService;
+import dao.FilmService;
 import dao.PersonnageService;
 import exclusions.FilmExclusionStrategy;
 import metier.Personnage;
@@ -55,14 +57,13 @@ public class PersonnageWService {
         Personnage personnage = new Personnage();
 
         if (charName != null) personnage.setNomPers(charName);
-        PersonnagePK personnagePK = new PersonnagePK();
-        if (actorId != null) personnagePK.setNoAct(Integer.parseInt(actorId));
-        if (movieId != null) personnagePK.setNoFilm(Integer.parseInt(movieId));
-        personnage.setId(personnagePK);
+        if (actorId != null) personnage.setActeur(new ActeurService().getActeurById(Integer.parseInt(actorId)));
+        if (movieId != null) personnage.setFilm(new FilmService().getFilmById(Integer.parseInt(movieId)));
 
         PersonnageService personnageService = new PersonnageService();
         personnageService.addPersonnage(personnage);
-        return new Gson().toJson(personnage);
+        return new GsonBuilder().addSerializationExclusionStrategy(new FilmExclusionStrategy())
+                .create().toJson(personnage);
     }
 
     @PUT
@@ -79,14 +80,14 @@ public class PersonnageWService {
 
         Personnage newPersonnage = new Personnage();
         if (charName != null) newPersonnage.setNomPers(charName);
-        PersonnagePK personnagePK = new PersonnagePK();
-        if (newActorId != null) personnagePK.setNoAct(Integer.parseInt(newActorId));
-        if (newMovieId != null) personnagePK.setNoFilm(Integer.parseInt(newMovieId));
-        newPersonnage.setId(personnagePK);
+        if (newActorId != null) newPersonnage.setActeur(new ActeurService().getActeurById(Integer.parseInt(newActorId)));
+        if (newMovieId != null) newPersonnage.setFilm(new FilmService().getFilmById(Integer.parseInt(newMovieId)));
+
 
 
         personnageService.updatePersonnage(oldPers, newPersonnage);
-        return new Gson().toJson(newPersonnage);
+        return new GsonBuilder().addSerializationExclusionStrategy(new FilmExclusionStrategy())
+                .create().toJson(newPersonnage);
     }
 
     @PUT
@@ -98,17 +99,15 @@ public class PersonnageWService {
                                          @FormParam("noAct") String newActorId) {
         PersonnageService personnageService = new PersonnageService();
 
-        Personnage oldPers = personnageService.getPersonnageByName(charName);
+        Personnage oldPers = personnageService.getPersonnageByName(oldCharName);
 
         Personnage newPersonnage = new Personnage();
         if (charName != null) newPersonnage.setNomPers(charName);
-        PersonnagePK personnagePK = new PersonnagePK();
-        if (newActorId != null) personnagePK.setNoAct(Integer.parseInt(newActorId));
-        if (newMovieId != null) personnagePK.setNoFilm(Integer.parseInt(newMovieId));
-        newPersonnage.setId(personnagePK);
+        if (newActorId != null) newPersonnage.setActeur(new ActeurService().getActeurById(Integer.parseInt(newActorId)));
+        if (newMovieId != null) newPersonnage.setFilm(new FilmService().getFilmById(Integer.parseInt(newMovieId)));
 
 
         personnageService.updatePersonnage(oldPers, newPersonnage);
-        return new Gson().toJson(newPersonnage);
-    }
+        return new GsonBuilder().addSerializationExclusionStrategy(new FilmExclusionStrategy())
+                .create().toJson(newPersonnage);    }
 }
